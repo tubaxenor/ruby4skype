@@ -12,8 +12,8 @@ spec = Gem::Specification.new do |s|
   s.homepage = 'http://rubyforge.org/projects/skyperapper/'
   s.rubyforge_project = "Ruby4Skype"
   # s.executables = ['your_executable_here']
-  s.files = %w(LICENSE README Rakefile) + Dir.glob("{lib,spec}/**/*")
-  s.require_path = "lib"
+  s.files = Dir.glob("lib/**/*")
+  s.require_paths = ["lib"]
   # s.bindir = "bin"
 end
 
