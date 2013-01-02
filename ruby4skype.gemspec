@@ -1,7 +1,9 @@
+$:.push File.expand_path("../lib", __FILE__)
 spec = Gem::Specification.new do |s|
   s.name = 'Ruby4Skype'
   s.version = '0.4.1'
   s.has_rdoc = true
+  s.platform    = Gem::Platform::RUBY
   s.extra_rdoc_files = ['README', 'LICENSE']
   s.summary = 'SkypeAPI wrapper'
   s.description = s.summary
