@@ -12,13 +12,13 @@ module Skype
           end
         end
       end
-      
+
       def initialize app_name, service_name="org.ruby.service"
-        super()
-        
+        super(app_name)
+
         @app_name = app_name
         @queue = Queue.new
-        
+
         @bus = DBus.session_bus
         notify = Notify.new("/com/Skype/Client")
         notify.instance_variable_set(:@os, self)
@@ -29,10 +29,10 @@ module Skype
         @invoker.default_iface = 'com.Skype.API'
         @invoker.introspect
       end
-      
+
       attr_reader :queue
       private :queue
-      
+
       def set_notify_selector block=Proc.new
         @notify_selector = block
       end
@@ -62,13 +62,13 @@ module Skype
         #@queue.push proc{do_hook :received, res}
         return res
       end
-      
+
       alias invoke_block invoke_prototype
 
       def invoke_callback *args
         raise Skype::Error::NotImprement
       end
-      
+
       def start_messageloop
         Thread.new{messageloop}
       end
@@ -95,19 +95,19 @@ module Skype
       def push_queue res
         p res
         #queue.push(proc{do_hook(:received, res)})
-        
+
         if res == 'CONNSTATUS LOGGEDOUT'
           @attached = false
           #queue.push(proc{do_hook(:detached)})
           #Skype.attach
         end
-            
+
         queue.push(proc{notify_selector.call res}) if notify_selector
       end
 
       def close
         queue.push :exit
-        
+
       end
 
     end
