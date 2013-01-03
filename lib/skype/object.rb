@@ -1,7 +1,7 @@
 require 'date'
 require 'forwardable'
 
-module Skype    
+module Skype
   class AbstractObject #:nodoc: all
     module Notify
       def setNotify property=nil,value=nil, block=Proc.new
@@ -71,9 +71,9 @@ module Skype
     module Parser
       def parse sym, res
         if self == Skype
-          Skype.property2callback[Skype.property2symbol.index(sym)].call(res)
+          Skype.property2callback[Skype.property2symbol.key(sym)].call(res)
         else
-          self.class.property2callback[self.class.property2symbol.index(sym)].call(res)
+          self.class.property2callback[self.class.property2symbol.key(sym)].call(res)
         end
       end
       private :parse
@@ -176,12 +176,12 @@ module Skype
     include Parser
     include Notify
     include Invokers
-      
+
     @@instance = Hash.new do |hash,key|
       hash[key] = Hash.new
     end
     @@skypeApi = Skype
-      
+
     def self.inherited sub
       if self == AbstractObject
         sub.instance_variable_set :@property2symbol, Hash.new{|hash,key| hash[key] = key}
@@ -197,7 +197,7 @@ module Skype
         property = @property2symbol[skypeProperty].to_s.downcase.to_sym if @property2symbol[skypeProperty].class == Symbol
         value = @property2callback[skypeProperty].call value if @property2callback[skypeProperty]
 
-          
+
         if @notify[nil]
           @notify[nil][nil].call instance, property, value if @notify[nil][nil]
           @notify[nil][value].call instance, property if @notify[nil][value]
@@ -209,7 +209,7 @@ module Skype
         @@instance[self][id].notified instance, property, value if @@instance[self][id]
       end
     end
-      
+
     def self.new id
       if @@instance[self][id]
         return @@instance[self][id]
@@ -222,15 +222,15 @@ module Skype
         return instance
       end
     end
-      
+
     def initialize id
       @id = id
     end
-      
+
     def to_s
       @id.to_s
     end
-      
+
     def_delegators :@@skypeApi, :invoke
   end
 end
